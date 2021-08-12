@@ -1,6 +1,12 @@
 <template>
   <div class="board">
-    <div class="board-number" v-for="(number, idx) in bingoBoard" :key="idx">{{ number }}</div>
+    <div
+      class="board-number"
+      v-for="(number, idx) in bingoBoard"
+      :key="idx"
+      :ref="'bingo_'+number"
+      @click="clickBingo(number)"
+    >{{ number }}</div>
   </div>
 </template>
 
@@ -14,14 +20,34 @@ export default {
   created() {
     this.shakeBingo();
   },
+  computed: {
+    checkBingo: function () {
+      return this.$store.state.bingo;
+    },
+  },
+  watch: {
+    checkBingo: function (val) {
+      this.colorBingo(val);
+    },
+  },
   methods: {
     // 빙고판을 랜덤으로 섞는다.
     shakeBingo: function () {
       const arr = [];
       for (let i = 1; i <= 25; i++) arr.push(i);
       arr.sort(() => Math.random() - 0.5);
-      console.log(arr);
       this.bingoBoard = arr;
+    },
+
+    // 숫자판 색칠
+    colorBingo: function (number) {
+      this.$refs[`bingo_${number}`][0].classList.add("active");
+    },
+
+    // 숫자판 클릭
+    clickBingo: function (number) {
+      this.colorBingo(number);
+      this.$store.commit("colorBingo", number);
     },
   },
 };
