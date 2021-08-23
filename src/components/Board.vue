@@ -59,15 +59,16 @@ export default {
 }
 
 .board {
-  width: 750px;
-  border: 1px solid rgb(180, 180, 180);
+  width: 754px;
+  border: 2px solid rgb(180, 180, 180);
   display: flex;
   flex-wrap: wrap;
+  margin: 0px 20px;
 }
 
 .board .board-number {
-  border: 1px solid rgb(180, 180, 180);
-  flex: 0 0 20%;
+  border: 2px solid rgb(180, 180, 180);
+  flex: 0 0 150px;
   height: 150px;
   display: flex;
   align-items: center;
