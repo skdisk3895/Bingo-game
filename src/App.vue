@@ -1,11 +1,11 @@
 <template>
   <div id="app">
     <div class="reset-btn">
-      <button>Reset</button>
+      <button @click="reset()">Reset</button>
     </div>
     <div class="boards">
-      <Board />
-      <Board />
+      <Board ref="user_1" />
+      <Board ref="user_2" />
     </div>
     <TurnModal />
   </div>
@@ -20,13 +20,28 @@ export default {
     Board,
     TurnModal,
   },
+  methods: {
+    removeAllColor: function (user) {
+      Object.entries(this.$refs[user].$refs).forEach(bingo => {
+        bingo[1][0].classList.remove("active");
+      })
+    },
+    reset: function () {
+      // UI에서 색칠된 빙고판 색깔 제거
+
+      // 1번 유저의 빙고판 색깔 제거
+      this.removeAllColor("user_1");
+
+      // 2번 유저의 빙고판 색깔 제거
+      this.removeAllColor("user_2");
+    }
+  }
 };
 </script>
 
 <style scoped>
 
 #app {
-  /* height: 1200px; */
   overflow: hidden;
 }
 
