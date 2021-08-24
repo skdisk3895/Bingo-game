@@ -6,7 +6,9 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     bingo: 0,
-    turn: -1,
+    turn: 1,
+    user_1: 0,
+    user_2: 0,
   },
   getters: {},
   mutations: {

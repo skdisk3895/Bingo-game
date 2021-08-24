@@ -4,8 +4,8 @@
       <button @click="reset()">Reset</button>
     </div>
     <div class="boards">
-      <Board ref="user_1" />
-      <Board ref="user_2" />
+      <Board ref="user_1" :user="1" />
+      <Board ref="user_2" :user="2" />
     </div>
     <TurnModal />
   </div>
@@ -34,6 +34,9 @@ export default {
 
       // 2번 유저의 빙고판 색깔 제거
       this.removeAllColor("user_2");
+
+      // 턴 초기화
+      this.$store.state.turn = 1;
     }
   }
 };
