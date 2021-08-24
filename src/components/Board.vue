@@ -51,7 +51,6 @@ export default {
           this.colored.push(false);
         }
       }
-      // console.log(this.colored)
     },
     // 빙고판을 랜덤으로 섞는다.
     shakeBingo: function () {
@@ -75,14 +74,12 @@ export default {
     },
     // 결과 체크
     checkResult: function () {
-      console.log(this.$store.state.user_1, this.$store.state.user_2);
-      
       if (this.$store.state.user_1 >= 5 && this.$store.state.user_2 < 5) {
-        alert("유저 1 승!");
+        this.$store.state.winner = 1;
       } else if (this.$store.state.user_2 >= 5 && this.$store.state.user_1 < 5) {
-        alert("유저 2 승!");
+        this.$store.state.winner = 2;
       } else if (this.$store.state.user_2 >= 5 && this.$store.state.user_1 >= 5) {
-        alert("무승부!");
+        this.$store.state.winner = 3;
       }
     },
     // 전체 빙고 개수 체크
@@ -143,7 +140,6 @@ export default {
         alert("당신 차례가 아닙니다.");
         return;
       }
-      // this.colorBingo(number);
       this.$store.commit("colorBingo", number);
       this.$store.state.turn = this.user === 1 ? 2 : 1;
     },
@@ -152,10 +148,6 @@ export default {
 </script>
 
 <style scoped>
-* {
-  box-sizing: border-box;
-}
-
 .board {
   width: 754px;
   border: 2px solid rgb(180, 180, 180);

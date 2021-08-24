@@ -9,6 +9,7 @@ export default new Vuex.Store({
     turn: 1,
     user_1: 0,
     user_2: 0,
+    winner: 0,
   },
   getters: {},
   mutations: {

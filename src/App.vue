@@ -7,18 +7,21 @@
       <Board ref="user_1" :user="1" />
       <Board ref="user_2" :user="2" />
     </div>
-    <TurnModal />
+    <ResultModal />
+    <Shadow />
   </div>
 </template>
 
 <script>
 import Board from "@/components/Board.vue";
-import TurnModal from "@/components/TurnModal.vue";
+import ResultModal from "@/components/ResultModal.vue";
+import Shadow from "@/components/Shadow.vue";
 
 export default {
   components: {
     Board,
-    TurnModal,
+    ResultModal,
+    Shadow
   },
   methods: {
     removeAllColor: function (user) {
@@ -42,7 +45,12 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 #app {
   overflow: hidden;
