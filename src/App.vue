@@ -3,25 +3,22 @@
     <div class="reset-btn">
       <button @click="reset()">Reset</button>
     </div>
+    <Result />
     <div class="boards">
       <Board ref="user_1" :user="1" />
       <Board ref="user_2" :user="2" />
     </div>
-    <ResultModal />
-    <Shadow />
   </div>
 </template>
 
 <script>
 import Board from "@/components/Board.vue";
-import ResultModal from "@/components/ResultModal.vue";
-import Shadow from "@/components/Shadow.vue";
+import Result from "@/components/Result.vue";
 
 export default {
   components: {
     Board,
-    ResultModal,
-    Shadow
+    Result,
   },
   methods: {
     removeAllColor: function (user) {
@@ -31,15 +28,17 @@ export default {
     },
     reset: function () {
       // UI에서 색칠된 빙고판 색깔 제거
-
       // 1번 유저의 빙고판 색깔 제거
       this.removeAllColor("user_1");
 
       // 2번 유저의 빙고판 색깔 제거
       this.removeAllColor("user_2");
 
-      // 턴 초기화
+      // vuex state 초기화
       this.$store.state.turn = 1;
+      this.$store.state.finish = false;
+      this.$store.commit("resetColored");
+      this.$store.state.winner = 0;
     }
   }
 };

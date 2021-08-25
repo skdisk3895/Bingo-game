@@ -32,23 +32,25 @@ export default {
   },
   watch: {
     checkBingo: function (val) {
-      this.colorBingo(val);
+      this.user === 1 ? this.colorFirstBingo(val) : this.colorSecondBingo(val); 
       this.checkTotalBingo();
 
       if (this.user === 2) this.checkResult();
     },
   },
   methods: {
-    // 디버깅용
-    printColored: function () {
-      for (let i = 0; i < 25; i++) {
-        console.log(this.colored[i])
-      }
-    },
     initColored: function () {
-      for (let i = 0; i < 5; i++) {
-        for (let j = 0; j < 5; j++) {
-          this.colored.push(false);
+      if (this.user === 1) {
+        for (let i = 0; i < 5; i++) {
+          for (let j = 0; j < 5; j++) {
+            this.$store.state.colored_1.push(false);
+          }
+        }
+      } else {
+        for (let i = 0; i < 5; i++) {
+          for (let j = 0; j < 5; j++) {
+            this.$store.state.colored_2.push(false);
+          }
         }
       }
     },
@@ -59,12 +61,25 @@ export default {
       arr.sort(() => Math.random() - 0.5);
       this.bingoBoard = arr;
     },
-    // 숫자판 색칠
-    colorBingo: function (number) {
+    // 첫 번째 빙고 숫자판 색칠
+    colorFirstBingo: function (number) {
       // 색칠된 보드 체크
       for (let i = 0; i < 25; i++) {
         if (Object.entries(this.$refs)[i][0] === `bingo_${number}`) {
-          this.colored[i] = true;
+          this.$store.state.colored_1[i] = true;
+          break;
+        }
+      }
+      
+      // 색칠
+      this.$refs[`bingo_${number}`][0].classList.add("active");
+    },
+    // 두 번째 빙고 숫자판 색칠
+    colorSecondBingo: function (number) {
+      // 색칠된 보드 체크
+      for (let i = 0; i < 25; i++) {
+        if (Object.entries(this.$refs)[i][0] === `bingo_${number}`) {
+          this.$store.state.colored_2[i] = true;
           break;
         }
       }
@@ -88,50 +103,50 @@ export default {
     // 전체 빙고 개수 체크
     checkTotalBingo: function () {
       if (this.user === 1) {
-        this.$store.state.user_1 = this.checkHorizontal() + this.checkVertical() + this.checkDiagonal(); 
+        this.$store.state.user_1 = this.checkHorizontal(this.$store.state.colored_1) + this.checkVertical(this.$store.state.colored_1) + this.checkDiagonal(this.$store.state.colored_1); 
       } else {
-        this.$store.state.user_2 = this.checkHorizontal() + this.checkVertical() + this.checkDiagonal();
+        this.$store.state.user_2 = this.checkHorizontal(this.$store.state.colored_2) + this.checkVertical(this.$store.state.colored_2) + this.checkDiagonal(this.$store.state.colored_2);
       }
     },
     // 가로 빙고 수 체크
-    checkHorizontal: function () {
+    checkHorizontal: function (colored) {
       let total = 0;
       for (let i = 0; i <= 20; i+=5) {
         let score = 0;
         for (let j = i; j < i+5; j++) {
-          if (this.colored[j]) score++;
+          if (colored[j]) score++;
         }
         if (score === 5) total++;
       }
       return total;
     },
     // 세로 빙고 수 체크
-    checkVertical: function () {
+    checkVertical: function (colored) {
       let total = 0;
       for (let i = 0; i < 5; i++) {
         let score = 0;
         for (let j = i; j <= i+20; j+=5) {
-          if (this.colored[j]) score++;
+          if (colored[j]) score++;
         }
         if (score === 5) total++;
       }
       return total;
     },
     // 대각선 빙고 수 체크
-    checkDiagonal: function () {
+    checkDiagonal: function (colored) {
       // 오른쪽 아래 방향
       let total = 0;
       let score = 0;
       
       for (let i = 0; i < this.colored.length; i += (5 + 1)) {
-        if (this.colored[i]) score++;
+        if (colored[i]) score++;
       }
       if (score === 5) total++;
 
       // 왼쪽 아래 방향
       score = 0;
       for (let i = (5 - 1); i <= (5 * 4); i += (5 - 1)) {
-        if (this.colored[i]) score++;
+        if (colored[i]) score++;
       }
       if (score === 5) total++;
 
