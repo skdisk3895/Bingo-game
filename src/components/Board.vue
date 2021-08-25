@@ -22,7 +22,7 @@ export default {
     };
   },
   created() {
-    this.init();
+    this.initColored();
     this.shakeBingo();
   },
   computed: {
@@ -45,7 +45,7 @@ export default {
         console.log(this.colored[i])
       }
     },
-    init: function () {
+    initColored: function () {
       for (let i = 0; i < 5; i++) {
         for (let j = 0; j < 5; j++) {
           this.colored.push(false);
@@ -76,10 +76,13 @@ export default {
     checkResult: function () {
       if (this.$store.state.user_1 >= 5 && this.$store.state.user_2 < 5) {
         this.$store.state.winner = 1;
+        this.$store.state.finish = true;
       } else if (this.$store.state.user_2 >= 5 && this.$store.state.user_1 < 5) {
         this.$store.state.winner = 2;
+        this.$store.state.finish = true;
       } else if (this.$store.state.user_2 >= 5 && this.$store.state.user_1 >= 5) {
         this.$store.state.winner = 3;
+        this.$store.state.finish = true;
       }
     },
     // 전체 빙고 개수 체크
@@ -136,6 +139,7 @@ export default {
     },
     // 숫자판 클릭
     clickBingo: function (number) {
+      if (this.$store.state.finish) return;
       if (this.user !== this.$store.state.turn) {
         alert("당신 차례가 아닙니다.");
         return;
