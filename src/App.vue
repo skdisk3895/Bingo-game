@@ -1,4 +1,4 @@
-<template>
+npm i<template>
   <div id="app">
     <div class="reset-btn">
       <button @click="reset()">Reset</button>

@@ -168,7 +168,7 @@ export default {
 
 <style scoped>
 .board {
-  width: 754px;
+  width: 40.3vw;
   border: 2px solid rgb(180, 180, 180);
   display: flex;
   flex-wrap: wrap;
@@ -177,8 +177,8 @@ export default {
 
 .board .board-number {
   border: 2px solid rgb(180, 180, 180);
-  flex: 0 0 150px;
-  height: 150px;
+  flex: 0 0 8vw;
+  height: 15vh;
   display: flex;
   align-items: center;
   justify-content: center;
