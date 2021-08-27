@@ -4,7 +4,7 @@
       class="board-number"
       v-for="(number, idx) in bingoBoard"
       :key="idx"
-      :ref="'bingo_'+number"
+      :ref="'bingo_' + number"
       @click="clickBingo(number)"
     >{{ number }}</div>
   </div>
@@ -12,9 +12,7 @@
 
 <script>
 export default {
-  props: [
-    "user",
-  ],
+  props: ["user"],
   data() {
     return {
       bingoBoard: [],
@@ -32,7 +30,7 @@ export default {
   },
   watch: {
     checkBingo: function (val) {
-      this.user === 1 ? this.colorFirstBingo(val) : this.colorSecondBingo(val); 
+      this.user === 1 ? this.colorFirstBingo(val) : this.colorSecondBingo(val);
       this.checkTotalBingo();
 
       if (this.user === 2) this.checkResult();
@@ -70,7 +68,7 @@ export default {
           break;
         }
       }
-      
+
       // 색칠
       this.$refs[`bingo_${number}`][0].classList.add("active");
     },
@@ -83,7 +81,7 @@ export default {
           break;
         }
       }
-      
+
       // 색칠
       this.$refs[`bingo_${number}`][0].classList.add("active");
     },
@@ -92,10 +90,16 @@ export default {
       if (this.$store.state.user_1 >= 5 && this.$store.state.user_2 < 5) {
         this.$store.state.winner = 1;
         this.$store.state.finish = true;
-      } else if (this.$store.state.user_2 >= 5 && this.$store.state.user_1 < 5) {
+      } else if (
+        this.$store.state.user_2 >= 5 &&
+        this.$store.state.user_1 < 5
+      ) {
         this.$store.state.winner = 2;
         this.$store.state.finish = true;
-      } else if (this.$store.state.user_2 >= 5 && this.$store.state.user_1 >= 5) {
+      } else if (
+        this.$store.state.user_2 >= 5 &&
+        this.$store.state.user_1 >= 5
+      ) {
         this.$store.state.winner = 3;
         this.$store.state.finish = true;
       }
@@ -103,17 +107,23 @@ export default {
     // 전체 빙고 개수 체크
     checkTotalBingo: function () {
       if (this.user === 1) {
-        this.$store.state.user_1 = this.checkHorizontal(this.$store.state.colored_1) + this.checkVertical(this.$store.state.colored_1) + this.checkDiagonal(this.$store.state.colored_1); 
+        this.$store.state.user_1 =
+          this.checkHorizontal(this.$store.state.colored_1) +
+          this.checkVertical(this.$store.state.colored_1) +
+          this.checkDiagonal(this.$store.state.colored_1);
       } else {
-        this.$store.state.user_2 = this.checkHorizontal(this.$store.state.colored_2) + this.checkVertical(this.$store.state.colored_2) + this.checkDiagonal(this.$store.state.colored_2);
+        this.$store.state.user_2 =
+          this.checkHorizontal(this.$store.state.colored_2) +
+          this.checkVertical(this.$store.state.colored_2) +
+          this.checkDiagonal(this.$store.state.colored_2);
       }
     },
     // 가로 빙고 수 체크
     checkHorizontal: function (colored) {
       let total = 0;
-      for (let i = 0; i <= 20; i+=5) {
+      for (let i = 0; i <= 20; i += 5) {
         let score = 0;
-        for (let j = i; j < i+5; j++) {
+        for (let j = i; j < i + 5; j++) {
           if (colored[j]) score++;
         }
         if (score === 5) total++;
@@ -125,7 +135,7 @@ export default {
       let total = 0;
       for (let i = 0; i < 5; i++) {
         let score = 0;
-        for (let j = i; j <= i+20; j+=5) {
+        for (let j = i; j <= i + 20; j += 5) {
           if (colored[j]) score++;
         }
         if (score === 5) total++;
@@ -137,15 +147,15 @@ export default {
       // 오른쪽 아래 방향
       let total = 0;
       let score = 0;
-      
-      for (let i = 0; i < this.colored.length; i += (5 + 1)) {
+
+      for (let i = 0; i < this.colored.length; i += 5 + 1) {
         if (colored[i]) score++;
       }
       if (score === 5) total++;
 
       // 왼쪽 아래 방향
       score = 0;
-      for (let i = (5 - 1); i <= (5 * 4); i += (5 - 1)) {
+      for (let i = 5 - 1; i <= 5 * 4; i += 5 - 1) {
         if (colored[i]) score++;
       }
       if (score === 5) total++;

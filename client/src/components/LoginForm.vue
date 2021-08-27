@@ -2,8 +2,8 @@
   <div class="login-box">
     <div class="login-form">
       <div class="input-form">
-        <input type="text">
-        <input type="password">
+        <input type="text" />
+        <input type="password" />
       </div>
       <div class="login-btn">
         <button>Login</button>
@@ -21,13 +21,14 @@ export default {
   methods: {
     openSignupModal: function () {
       this.$emit("open-signup");
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style>
 .login-box {
+  height: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -53,7 +54,7 @@ export default {
   width: 400px;
   height: 50px;
   margin: 10px 0;
-  padding: 10px;
+  padding: 15px;
   font-size: 20px;
   border-radius: 20px;
   border: 3px solid #a02d6c;
@@ -82,7 +83,8 @@ export default {
   margin-top: 10px;
 }
 
-.signup-link, .password-link {
+.signup-link,
+.password-link {
   padding: 10px;
   margin: 0 10px;
   border: 3px solid #a02d6c;
@@ -93,7 +95,9 @@ export default {
   cursor: pointer;
 }
 
-.login-form .login-btn button:hover, .signup-link:hover, .password-link:hover {
+.login-form .login-btn button:hover,
+.signup-link:hover,
+.password-link:hover {
   background-color: #a02d6c;
 }
 </style>

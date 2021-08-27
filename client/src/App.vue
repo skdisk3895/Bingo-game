@@ -7,7 +7,6 @@
     <!-- Signup modal -->
     <SignupForm :toggle="signupToggle" />
 
-
     <!-- <div class="reset-btn">
       <button @click="reset()">Reset</button>
     </div>
@@ -15,7 +14,7 @@
     <div class="boards">
       <Board ref="user_1" :user="1" />
       <Board ref="user_2" :user="2" />
-    </div> -->
+    </div>-->
   </div>
 </template>
 
@@ -30,18 +29,18 @@ export default {
   components: {
     Logo,
     LoginForm,
-    SignupForm
+    SignupForm,
   },
   data() {
     return {
       signupToggle: false,
-    }
+    };
   },
   methods: {
     openSignup: function () {
       this.signupToggle = true;
-    }
-  }
+    },
+  },
   // components: {
   //   Board,
   //   Result,
@@ -84,5 +83,6 @@ export default {
   justify-content: center;
   flex-direction: column;
   background-color: #0c0029;
+  overflow: hidden;
 }
 </style>

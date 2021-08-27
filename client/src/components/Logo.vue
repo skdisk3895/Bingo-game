@@ -1,17 +1,25 @@
 <template>
-  <div>
-    <img src="../assets/main.png" alt="">
+  <div class="logo">
+    <img src="../assets/main.png" alt />
   </div>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 50%;
+  height: 70%;
+}
+
 img {
-  width: 37vw;
+  width: 95%;
+  height: 100%;
 }
 </style>
