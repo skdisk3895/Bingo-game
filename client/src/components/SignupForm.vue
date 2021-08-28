@@ -32,10 +32,6 @@ export default {
 </script>
 
 <style>
-/* #signupApp {
-  overflow: hidden;
-} */
-
 .signup-box {
   width: 30vw;
   height: 60vh;

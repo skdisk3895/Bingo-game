@@ -6,7 +6,7 @@
         <input type="password" />
       </div>
       <div class="login-btn">
-        <button>Login</button>
+        <button @click="login()">Login</button>
       </div>
     </div>
     <div class="links">
@@ -19,8 +19,11 @@
 <script>
 export default {
   methods: {
-    openSignupModal: function () {
+    openSignupModal() {
       this.$emit("open-signup");
+    },
+    login() {
+      this.$router.push({ name: "lobby" });
     },
   },
 };
