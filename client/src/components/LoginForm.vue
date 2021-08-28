@@ -38,7 +38,7 @@ export default {
   flex-direction: column;
   margin-bottom: 100px;
   border-radius: 15px;
-  background-color: #1a1919;
+  background-color: #000000;
   padding: 30px;
 }
 
@@ -60,9 +60,9 @@ export default {
   padding: 15px;
   font-size: 20px;
   border-radius: 20px;
-  border: 3px solid #a02d6c;
-  background-color: #1a1919;
-  color: white;
+  border: 3px solid #28155f;
+  background-color: #000000;
+  color: rgb(219, 129, 26);
 }
 
 .login-form input:focus {
@@ -71,14 +71,14 @@ export default {
 }
 
 .login-form .login-btn button {
-  border: 3px solid #a02d6c;
+  border: 3px solid #28155f;
   border-radius: 10px;
-  background-color: #1a1919;
+  background-color: #000000;
   margin-left: 10px;
   width: 120px;
   height: 120px;
   font-size: 35px;
-  color: #ffffff;
+  color: rgb(219, 129, 26);
   cursor: pointer;
 }
 
@@ -90,17 +90,17 @@ export default {
 .password-link {
   padding: 10px;
   margin: 0 10px;
-  border: 3px solid #a02d6c;
+  border: 3px solid #28155f;
   border-radius: 20px;
-  background-color: #1a1919;
+  background-color: #000000;
   font-size: 20px;
-  color: #ffffff;
+  color: rgb(219, 129, 26);
   cursor: pointer;
 }
 
 .login-form .login-btn button:hover,
 .signup-link:hover,
 .password-link:hover {
-  background-color: #a02d6c;
+  background-color: #28155f;
 }
 </style>
