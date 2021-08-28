@@ -43,7 +43,6 @@ export default {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: #0c0029;
   overflow: hidden;
 }
 </style>

@@ -1,23 +1,41 @@
 const app = require("express")();
-const server = require("http").createServer(app);
-const io = require("socket.io")(server);
+const http = require("http");
+const server = http.createServer(app);
+const io = require('socket.io')(server, {
+  cors: {
+    origin: "http://localhost:8080",
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+});
 
-// setting cors
-// app.all("/*", function (req, res, next) {
+
+// app.all('/*', function(req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "*");
 //   res.header("Access-Control-Allow-Headers", "X-Requested-With");
 //   next();
 // });
 
-app.get("/", function (req, res) {
-  res.sendFile("Hello server");
-});
 
-io.on("connection", (client) => {
-  client.on("event", (data) => {
-    console.log(data);
+io.on("connection", (socket) => {
+  console.log(`Connect from Client: ${socket}`);
+
+  socket.on("chat", (data) => {
+    console.log(`message from Client: ${data.message}`);
+    console.log(`id : ${data.socketId}`);
+
+    const rtnMessage = {
+      message: data.message,
+      socketId: data.socketId,
+    };
+
+    // 클라이언트에게 메세지 전송
+    socket.broadcast.emit("chat", rtnMessage);
   });
-  client.on("disconnect", () => {});
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
 });
 
 server.listen(3000, function () {

@@ -2,8 +2,8 @@
   <div class="login-box">
     <div class="login-form">
       <div class="input-form">
-        <input type="text" />
-        <input type="password" />
+        <input type="text" placeholder="아이디" />
+        <input type="password" placeholder="비밀번호" />
       </div>
       <div class="login-btn">
         <button @click="login()">Login</button>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="master">
     <router-view></router-view>
     <!-- <div class="reset-btn">
       <button @click="reset()">Reset</button>
@@ -47,5 +47,9 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+#master {
+  background-color: #0c0029;
 }
 </style>

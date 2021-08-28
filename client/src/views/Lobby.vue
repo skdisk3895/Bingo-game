@@ -1,14 +1,16 @@
 <template>
-	<div>
-		<h1>Lobby</h1>
-	</div>
+  <div id="app">
+    <ChatView />
+  </div>
 </template>
 
 <script>
+import ChatView from "@/components/ChatView.vue";
+
 export default {
-	created() {
-		console.log("asd");
-	},
+  components: {
+    ChatView,
+  },
 };
 </script>
 

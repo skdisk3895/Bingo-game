@@ -5,11 +5,11 @@
         <i class="fas fa-times" @click="closeSignup()"></i>
       </div>
       <div class="signup">
-        <input type="text" placeholder="이름" />
-        <input type="text" placeholder="아이디" />
-        <input type="password" placeholder="비밀번호" />
-        <input type="password" placeholder="비밀번호 확인" />
-        <input type="text" placeholder="휴대폰 번호('-' 제외)" />
+        <input type="text" placeholder="이름" ref="name" />
+        <input type="text" placeholder="아이디" ref="user_id" />
+        <input type="password" placeholder="비밀번호" ref="password" />
+        <input type="password" placeholder="비밀번호 확인" ref="password-confirm" />
+        <input type="text" placeholder="휴대폰 번호('-' 제외)" ref="phone" />
         <div class="signup-btn-box">
           <button>회원가입</button>
           <button @click="closeSignup()">취소</button>
@@ -24,8 +24,12 @@
 export default {
   props: ["toggle"],
   methods: {
+    resetInput() {
+      Object.entries(this.$refs).forEach((input) => (input[1].value = ""));
+    },
     closeSignup() {
       this.$emit("close-signup");
+      this.resetInput();
     },
   },
 };
@@ -40,7 +44,7 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  background-color: #1a1919;
+  background-color: #000000;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   overflow-y: hidden;
@@ -50,7 +54,7 @@ export default {
 .signup-box .close {
   text-align: right;
   margin-bottom: 50px;
-  color: white;
+  color: rgb(219, 129, 26);
   font-size: 20px;
 }
 
@@ -59,7 +63,7 @@ export default {
 }
 
 .signup-box .close i:hover {
-  color: #a02d6c;
+  color: #28155f;
 }
 
 .signup-box .signup {
@@ -76,9 +80,9 @@ export default {
   padding: 15px;
   font-size: 20px;
   border-radius: 20px;
-  border: 3px solid #a02d6c;
-  background-color: #1a1919;
-  color: white;
+  border: 3px solid #28155f;
+  background-color: #000000;
+  color: rgb(219, 129, 26);
 }
 
 .signup input:focus {
@@ -94,15 +98,15 @@ export default {
   height: 50px;
   font-size: 20px;
   border-radius: 20px;
-  border: 3px solid #a02d6c;
-  background-color: #1a1919;
-  color: white;
+  border: 3px solid #28155f;
+  background-color: #000000;
+  color: rgb(219, 129, 26);
   margin: 0 30px;
   cursor: pointer;
 }
 
 .signup-btn-box button:hover {
-  background-color: #a02d6c;
+  background-color: #28155f;
 }
 
 .shadow {
