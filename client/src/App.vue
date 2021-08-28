@@ -5,7 +5,7 @@
     <!-- LoginForm -->
     <LoginForm @open-signup="openSignup()" />
     <!-- Signup modal -->
-    <SignupForm :toggle="signupToggle" />
+    <SignupForm :toggle="signupToggle" @close-signup="closeSignup()" />
 
     <!-- <div class="reset-btn">
       <button @click="reset()">Reset</button>
@@ -37,8 +37,11 @@ export default {
     };
   },
   methods: {
-    openSignup: function () {
+    openSignup() {
       this.signupToggle = true;
+    },
+    closeSignup() {
+      this.signupToggle = false;
     },
   },
   // components: {

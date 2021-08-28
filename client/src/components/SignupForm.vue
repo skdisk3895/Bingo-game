@@ -2,17 +2,17 @@
   <div id="signupApp">
     <div class="signup-box" v-show="toggle">
       <div class="close">
-        <i class="fas fa-times"></i>
+        <i class="fas fa-times" @click="closeSignup()"></i>
       </div>
       <div class="signup">
         <input type="text" placeholder="이름" />
         <input type="text" placeholder="아이디" />
-        <input type="text" placeholder="비밀번호" />
-        <input type="text" placeholder="비밀번호 확인" />
+        <input type="password" placeholder="비밀번호" />
+        <input type="password" placeholder="비밀번호 확인" />
         <input type="text" placeholder="휴대폰 번호('-' 제외)" />
         <div class="signup-btn-box">
           <button>회원가입</button>
-          <button>취소</button>
+          <button @click="closeSignup()">취소</button>
         </div>
       </div>
     </div>
@@ -23,6 +23,11 @@
 <script>
 export default {
   props: ["toggle"],
+  methods: {
+    closeSignup() {
+      this.$emit("close-signup");
+    },
+  },
 };
 </script>
 
@@ -97,6 +102,11 @@ export default {
   background-color: #1a1919;
   color: white;
   margin: 0 30px;
+  cursor: pointer;
+}
+
+.signup-btn-box button:hover {
+  background-color: #a02d6c;
 }
 
 .shadow {
