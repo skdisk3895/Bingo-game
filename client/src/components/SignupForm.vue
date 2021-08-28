@@ -33,8 +33,8 @@ export default {
 
 <style>
 .signup-box {
-  width: 30vw;
-  height: 60vh;
+  width: 700px;
+  height: 600px;
   padding: 20px;
   position: absolute;
   left: 50%;
@@ -70,7 +70,7 @@ export default {
 }
 
 .signup input {
-  width: 25vw;
+  width: 500px;
   height: 50px;
   margin: 10px 0;
   padding: 15px;
@@ -90,7 +90,7 @@ export default {
 }
 
 .signup-btn-box button {
-  width: 10vw;
+  width: 200px;
   height: 50px;
   font-size: 20px;
   border-radius: 20px;
