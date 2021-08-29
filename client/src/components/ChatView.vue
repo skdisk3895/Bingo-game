@@ -9,25 +9,34 @@
 </template>
 
 <script>
+import { io } from "socket.io-client";
+
 export default {
   created() {
-    console.log(this.$socket);
-    this.$socket.on("chat", (data) => {
+    // 상대쪽에서 채팅올 때
+    this.socket.on("chat", (data) => {
       console.log(data);
-      this.textarea += data.message + "\n";
+      this.textarea += `${data.username}: ${data.message}` + "\n";
     });
   },
   data() {
     return {
       textarea: "",
       message: "",
+      username: "문어햄",
+      socket: io("http://localhost:3000"),
     };
   },
   methods: {
+    // 메세지 전송
+    // 아이디 정보는 세션에서 가져와야한다.
     sendMessage() {
       console.log(this.$socket);
-      this.$socket.emit("chat", { message: this.message });
-      this.textarea += this.message + "\n";
+      this.socket.emit("chat", {
+        message: this.message,
+        username: this.username,
+      });
+      this.textarea += `${this.username}: ${this.message}` + "\n";
       this.message = "";
     },
   },

@@ -1,5 +1,7 @@
-const app = require("express")();
+const express = require("express")
+const app = express();
 const http = require("http");
+const bodyParser = require("body-parser");
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
   cors: {
@@ -8,25 +10,25 @@ const io = require('socket.io')(server, {
     credentials: true
   }
 });
+const auth = require("./controller/auth");
+const PORT = process.env.PORT || 3000;
 
 
-// app.all('/*', function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "X-Requested-With");
-//   next();
-// });
+app.use(bodyParser.json());
 
+app.use("/auth", auth);
 
+// socket 통신
 io.on("connection", (socket) => {
   console.log(`Connect from Client: ${socket}`);
 
   socket.on("chat", (data) => {
     console.log(`message from Client: ${data.message}`);
-    console.log(`id : ${data.socketId}`);
+    console.log(`id : ${data.username}`);
 
     const rtnMessage = {
       message: data.message,
-      socketId: data.socketId,
+      username: data.username,
     };
 
     // 클라이언트에게 메세지 전송
@@ -38,6 +40,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3000, function () {
-  console.log("socket io server listening on port 3000");
+server.listen(PORT, function () {
+  console.log(`socket io server listening on port ${PORT}`);
 });
