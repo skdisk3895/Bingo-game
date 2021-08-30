@@ -49,6 +49,11 @@ export default {
   box-sizing: border-box;
 }
 
+p,
+span {
+  color: rgb(219, 129, 26);
+}
+
 #master {
   background-color: #0c0029;
 }

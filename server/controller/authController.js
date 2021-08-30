@@ -1,17 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const con = require("../repository/mysql").connectMySQL();
-
+const authService = require("../service/authService")
 
 // 아이디 중복 체크
-router.post("/checkid", (req, res) => {
+router.post("/checkid", async (req, res) => {
     const userId = req.body.user_id;
-    console.log(userId)
-    const sql = "SELECT * FROM USERS WHERE user_id = ?";
-    con.query(sql, [userId], (err, result, fileds) => {
-        if (err) throw err;
-        res.json({result: result.length});
-    })
+    const authCheck = new authService.AuthCheck(userId);
+    res.json({result: await authCheck.checkIdDuplication()});
+})
+
+// 인증번호 전송
+router.post("/certification", (req, res) => {
+    const phoneNumber = req.body.phone;
+
 })
 
 // 회원가입 Request에 대핸 Response

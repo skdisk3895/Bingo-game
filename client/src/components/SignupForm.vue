@@ -17,14 +17,12 @@
         <input type="password" placeholder="비밀번호 확인" ref="password_confirm" />
         <div class="phone">
           <div>
-            <input type="text" placeholder="휴대폰 번호('-' 제외)" spellcheck="false" ref="user_id" />
+            <input type="text" placeholder="휴대폰 번호('-' 제외)" spellcheck="false" ref="phone" />
             <button class="check-repeat" @click="requestCertification()">인증번호 전송</button>
           </div>
-          <p v-show="idCheck === 0">사용 가능한 아이디입니다.</p>
-          <p v-show="idCheck === 1">이미 존재하는 아이디입니다.</p>
         </div>
         <div class="phone-certification" v-if="isSendCertification">
-          <input type="text" placeholder="인증번호" spellcheck="false" ref="user_id" />
+          <input type="text" placeholder="인증번호" spellcheck="false" />
           <div class="certification-timer">
             <span>{{ minutes }}</span>
             <span>분</span>
@@ -47,9 +45,6 @@ import axios from "axios";
 
 export default {
   props: ["toggle"],
-  created() {
-    this.countDownTimer();
-  },
   computed: {
     minutes() {
       return parseInt(this.countDown / 60);
@@ -61,13 +56,15 @@ export default {
   data() {
     return {
       idCheck: -1,
-      countDown: 181,
+      countDown: 180,
       isSendCertification: false,
+      certificationTimeOut: null,
     };
   },
   methods: {
     // 아이디 중복확인 이벤트
     checkRepeatID() {
+      console.log(this.$refs["user_id"].value);
       if (!this.$refs["user_id"].value) return;
       axios
         .post("http://localhost:3000/auth/checkid", {
@@ -78,18 +75,21 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+    // input value 값 다 초기화
     resetInput() {
       Object.entries(this.$refs).forEach((input) => (input[1].value = ""));
     },
+    // signup 창 닫기
     closeSignup() {
       this.$emit("close-signup");
       this.resetInput();
+      if (this.certificationTimeOut) clearTimeout(this.certificationTimeOut);
       this.idCheck = -1;
-      this.countDown = 181;
+      this.countDown = 180;
       this.isSendCertification = false;
     },
+    // 입력된 값들 server에 request
     requestSignup() {
-      console.log(this.$refs["password_confirm"].value);
       axios
         .post("http://localhost:3000/auth/signup", {
           name: this.$refs["name"].value,
@@ -107,10 +107,11 @@ export default {
     // 인증번호 전송 이벤트
     requestCertification() {
       this.isSendCertification = true;
+      this.countDownTimer();
     },
     countDownTimer() {
       if (this.countDown > 0) {
-        setTimeout(() => {
+        this.certificationTimeOut = setTimeout(() => {
           this.countDown -= 1;
           this.countDownTimer();
         }, 1000);
@@ -260,10 +261,5 @@ export default {
   justify-content: center;
   height: 50px;
   margin: 10px 0;
-}
-
-p,
-span {
-  color: rgb(219, 129, 26);
 }
 </style>
