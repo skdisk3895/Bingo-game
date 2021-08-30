@@ -1,6 +1,7 @@
 const express = require("express")
 const app = express();
 const http = require("http");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
@@ -10,10 +11,12 @@ const io = require('socket.io')(server, {
     credentials: true
   }
 });
-const auth = require("./controller/auth");
+
 const PORT = process.env.PORT || 3000;
 
+const auth = require("./controller/authController");
 
+app.use(cors());
 app.use(bodyParser.json());
 
 app.use("/auth", auth);
