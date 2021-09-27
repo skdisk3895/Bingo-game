@@ -35,11 +35,16 @@
 							<option value="gmail.com">gmail.com</option>
 							<option value="nate.com">nate.com</option>
 						</select>
-						<button class="check-repeat" @click="requestCertification()">인증번호 전송</button>
+						<button class="check-repeat" @click="requestSendCertification()">인증번호 전송</button>
 					</div>
 					<p>{{ emailErrorMessage }}</p>
 				</div>
-				<input type="text" placeholder="인증번호" spellcheck="false" v-if="isSendCertification" />
+				<div class="email-certification" v-if="isSendCertification">
+					<div>
+						<input type="text" placeholder="인증번호" spellcheck="false" v-model="certificationNumber" />
+						<button class="check-repeat" @click="requestCertification()">인증하기</button>
+					</div>
+				</div>
 				<div class="signup-btn-box">
 					<button @click="signup()">회원가입</button>
 					<button @click="closeSignup()">취소</button>
@@ -51,7 +56,7 @@
 </template>
 
 <script>
-import { requestSignup } from "@/api/auth/auth.js";
+import { requestSignup, requestEmailCertification } from "@/api/auth/auth.js";
 
 export default {
 	props: ["toggle"],
@@ -62,7 +67,9 @@ export default {
 			passwordConfirmErrMessage: "",
 			emailErrorMessage: "",
 			isSendCertification: false,
-			certificationTimeOut: null,
+			isCertification: false,
+			certificationNumber: null,
+			code: null,
 			domain: "",
 			emailID: "",
 		};
@@ -77,6 +84,7 @@ export default {
 			this.$emit("close-signup");
 			this.resetInput();
 			this.clearErrorMessage();
+			this.isSendCertification = false;
 		},
 		// 존재하는 모든 error message 초기화
 		clearErrorMessage() {
@@ -86,47 +94,69 @@ export default {
 			this.emailErrorMessage = "";
 		},
 		// 입력된 값들 server에 request
-		async signup() {
+		signup() {
 			this.clearErrorMessage();
 			const email = `${this.emailID}@${this.domain}`;
-			const response = await requestSignup({
+			requestSignup({
 				user_id: this.$refs["user_id"].value,
 				password: this.$refs["password"].value,
 				password_confirm: this.$refs["password_confirm"].value,
 				email: email,
-			});
-
-			if (response.status === 200) {
-				const errorCode = response.data.errorCode || 0;
-				switch (errorCode) {
-					case 100:
-						this.idErrorMessage = "아이디를 형식대로 입력해주세요";
-						break;
-					case 200:
-						this.idErrorMessage = "이미 존재하는 아이디에요";
-						break;
-					case 101:
-						this.passwordErrorMessage = "비밀번호를 형식대로 입력해주세요";
-						break;
-					case 102:
-						this.passwordConfirmErrMessage = "비밀번호가 서로 달라요";
-						break;
-					case 103:
-						this.emailErrorMessage = "이메일을 형식대로 입력해주세요";
-						break;
-					default:
-						break;
-				}
-			} else {
-				console.err(response.data);
-			}
+				emailCertification: this.isSendCertification,
+			})
+				.then(() => {})
+				.catch(error => {
+					switch (error.response.data.message) {
+						case "ID Validation error!":
+							this.idErrorMessage = "아이디를 형식대로 입력해주세요";
+							break;
+						case "Already existed":
+							this.idErrorMessage = "이미 존재하는 아이디에요";
+							break;
+						case "Password validation error!":
+							this.passwordErrorMessage = "비밀번호를 형식대로 입력해주세요";
+							break;
+						case "Not same password":
+							this.passwordConfirmErrMessage = "비밀번호가 서로 달라요";
+							break;
+						case "Email validation error!":
+							this.emailErrorMessage = "이메일을 형식대로 입력해주세요";
+							break;
+						case "Email certification error!":
+							this.emailErrorMessage = "이메일 인증을 해주세요";
+							break;
+					}
+				});
 		},
 		// 인증번호 관련
 		// 인증번호 전송 이벤트
+		requestSendCertification() {
+			this.clearErrorMessage();
+
+			if (this.isSendCertification) {
+				alert("이미 인증번호를 전송했습니다.");
+				return;
+			}
+			// const email = `${this.emailID}@${this.domain}`;
+			requestEmailCertification({
+				email: `${this.emailID}@${this.domain}`,
+			})
+				.then(res => {
+					this.code = res.data.code;
+					console.log(this.code);
+					this.isSendCertification = true;
+				})
+				.catch(error => {
+					if (error.response.data.message === "Email validation error!")
+						this.emailErrorMessage = "이메일을 형식대로 입력해주세요";
+				});
+		},
 		requestCertification() {
-			const email = `${this.emailID}@${this.domain}`;
-			console.log(email);
-			// this.isSendCertification = true;
+			if (this.certificationNumber === this.code) {
+				console.log("인증완료");
+			} else {
+				console.log("틀린 인증번호");
+			}
 		},
 	},
 };
@@ -230,19 +260,11 @@ export default {
 .email button {
 	width: 100px;
 	height: 50px;
-	margin-top: 10px;
-	font-size: 15px;
 	border-radius: 20px;
 	border: 3px solid #28155f;
 	background-color: #000000;
 	color: rgb(219, 129, 26);
 	cursor: pointer;
-}
-
-.email button {
-	font-size: 13px;
-	padding: 5px;
-	margin-top: 0;
 }
 
 .email-select {
@@ -261,7 +283,8 @@ export default {
 }
 
 .id button:hover,
-.email button:hover {
+.email button:hover,
+.email-certification button:hover {
 	background-color: #28155f;
 }
 
@@ -271,10 +294,19 @@ export default {
 }
 
 .email-certification input {
-	width: 300px;
-	border-right: 0;
-	border-top-right-radius: 0;
-	border-bottom-right-radius: 0;
+	width: 320px;
+	margin-right: 30px;
+}
+
+.email-certification button {
+	width: 150px;
+	height: 50px;
+	border-radius: 20px;
+	border: 3px solid #28155f;
+	background-color: #000000;
+	color: rgb(219, 129, 26);
+	cursor: pointer;
+	font-size: 20px;
 }
 
 .certification-timer {

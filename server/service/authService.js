@@ -1,5 +1,7 @@
 const authRepository = require("../repository/authRepository");
+const crypto = require("crypto");
 
+// 회원가입 할 때 validation 체크
 class AuthCheck {
   constructor(userInfo = {}) {
     this.userId = userInfo.user_id || "";
@@ -46,9 +48,46 @@ class AuthCheck {
 
   // 이메일 유효성 체크
   checkEmailValidation() {
+    console.log("email : ", this.email);
     const reg_email = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
     return !reg_email.test(this.email) ? false : true;
   }
 }
 
+class EmailCertification extends AuthCheck {
+  generateRandomNumber() {
+    let randomNumber = "";
+    for (let i = 0; i < 6; i++) randomNumber += Math.floor(Math.random() * 10);
+
+    return randomNumber;
+  }
+}
+
+// 비밀번호 암호화
+class PasswordEncryption {
+  constructor(password, salt) {
+    this.password = password;
+    this.salt = salt;
+  }
+}
+
+// 회원가입, 로그인
+class Auth {
+  constructor(userInfo) {
+    this.userInfo = userInfo;
+  }
+
+  async signup() {
+    const result = await authRepository.insertUser(this.userInfo);
+    return new Promise((resolve, reject) => {
+      resolve(result);
+    });
+  }
+
+  login() {}
+}
+
 module.exports.AuthCheck = AuthCheck;
+module.exports.PasswordEncryption = PasswordEncryption;
+module.exports.Auth = Auth;
+module.exports.EmailCertification = EmailCertification;

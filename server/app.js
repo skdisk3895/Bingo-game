@@ -1,15 +1,15 @@
-const express = require("express")
+const express = require("express");
 const app = express();
 const http = require("http");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const server = http.createServer(app);
-const io = require('socket.io')(server, {
+const io = require("socket.io")(server, {
   cors: {
     origin: "http://localhost:8080",
     methods: ["GET", "POST"],
-    credentials: true
-  }
+    credentials: true,
+  },
 });
 
 const PORT = process.env.PORT || 3000;
@@ -38,8 +38,8 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("chat", rtnMessage);
   });
 
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
   });
 });
 

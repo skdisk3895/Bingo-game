@@ -4,4 +4,8 @@ function requestSignup(userInfo) {
   return instance.post("auth/signup", userInfo);
 }
 
-export { requestSignup };
+function requestEmailCertification(emailData) {
+  return instance.post("auth/emailcertification", emailData);
+}
+
+export { requestSignup, requestEmailCertification };
